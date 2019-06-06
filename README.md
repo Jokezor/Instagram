@@ -3,18 +3,18 @@ Contains crawler, downloader, storing in database, statistics and uploader/autom
 
 ## 1. Crawler: Start with the crawler which scrapes each instagram page contained in the txt file for: 
 
-Will be a module with different function for each command:
+	Will be a module with different function for each command:
 
-- The amount of posts
-- The number of followers
-- The amount followed
-- The amount of likes in the last **i** photos/videos starting with the latest where **i** is a input integer
-- The amount of comments in the last 'j' photos/videos starting with the latest where 'j' is a input integer
-- The text of all comments in the last 'k' photos/videos starting with the latest where 'k' is a input integer
-- The description text of each 'l' images checked where 'l' is a input integer
-- The href link to the 'm' photos/videos in question, where 'm' is a input integer
+	- The amount of posts
+	- The number of followers
+	- The amount followed
+	- The amount of likes in the last **i** photos/videos starting with the latest where **i** is a input integer
+	- The amount of comments in the last 'j' photos/videos starting with the latest where 'j' is a input integer
+	- The text of all comments in the last 'k' photos/videos starting with the latest where 'k' is a input integer
+	- The description text of each 'l' images checked where 'l' is a input integer
+	- The href link to the 'm' photos/videos in question, where 'm' is a input integer
 
-Where i, j, k, l, m were used as placeholders to show that they can be independent.
+	Where i, j, k, l, m were used as placeholders to show that they can be independent.
 
 
 ## 2. Downloader: downloads all of the href links specified
