@@ -5,7 +5,7 @@ Contains crawler, downloader, storing in database, statistics and uploader/autom
 
 	Will be a module with different function for each command:
 
-	- The amount of posts
+	``- The amount of posts``
 	- The number of followers
 	- The amount followed
 	- The amount of likes in the last **i** photos/videos starting with the latest where **i** is a input integer
