@@ -36,15 +36,15 @@ Where **i**, **j**, **k**, **l**, **m** were used as placeholders to show that t
 
 ### Example use:
 	
-	Grab **kittenattackz** from *accounts.txt* and proceed to check if **kittenattackz** exists in the database. If not, then proceeds to check the amount of posts, the amount of followers, the amount of likes in all photos/videos, the amount of comments in all photos/videos, inputs each of these in the table created for 'kittenattackz' in the database.
+Grab **kittenattackz** from *accounts.txt* and proceed to check if **kittenattackz** exists in the database. If not, then proceeds to check the amount of posts, the amount of followers, the amount of likes in all photos/videos, the amount of comments in all photos/videos, inputs each of these in the table created for 'kittenattackz' in the database.
 
-	If 'kittenattackz' exists already in the database then check if the amount of posts have increased and then check the amount of images/videos that the amount of posts increased by for The amount of likes, The amount of comments, The text of all comments, The description text of all images/videos and The href links and also the amount of followers.
+If 'kittenattackz' exists already in the database then check if the amount of posts have increased and then check the amount of images/videos that the amount of posts increased by for The amount of likes, The amount of comments, The text of all comments, The description text of all images/videos and The href links and also the amount of followers.
 
-	Score the images/videos according to the ratio between (likes + comments*X)/followers, where X is some function derived from the ratio of likes and comments (or the importance of comments for the top ratio photos/videos).
+Score the images/videos according to the ratio between (likes + comments*X)/followers, where X is some function derived from the ratio of likes and comments (or the importance of comments for the top ratio photos/videos).
 
-	Download the top **N** images/videos specified. Upload the
+Download the top **N** images/videos specified. Upload the
 
-	Store all relevant new data in the database.
+Store all relevant new data in the database.
 
 
 
