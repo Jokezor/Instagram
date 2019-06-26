@@ -24,10 +24,11 @@ def connect_to_account_db(host, user, password, acc_name):
 
 def check_tables(accounts, host, user, password):
 	
-	
-	tables_tot = ['number_posts', 'followers', 'following', 'likes', 'comments', 'comments_text', 'descriptions', 'hrefs']
+	# The tables all databases will have
+	tables_tot = ['stats', 'number_posts', 'followers', 'following', 'likes', 'comments', 'comments_text', 'descriptions', 'hrefs']
 
-	tables_to_add = {account: len(tables_tot) for account in accounts}
+	# Keeps track of tables to add
+	tables_to_add = {account: [] for account in accounts}
 
 	# Access each account's database
 	for acc_name in accounts:
@@ -35,16 +36,35 @@ def check_tables(accounts, host, user, password):
 
 		mycursor = mydb.cursor()
 
+		# Get the tables
 		mycursor.execute("SHOW TABLES")
 
-		# Remove one for each already existing
-		for table in mycursor:
-			tables_to_add[acc_name] -= 1
+		# Take the tables and save in list for comparing
+		tables_check = [table for table in mycursor]
 
-		print(tables_to_add)
+		# Remove one for each already existing
+		for table in tables_tot:
+			if not any(table_check == table for table_check in tables_check):
+				tables_to_add[acc_name].append(table)
+
+	return tables_to_add
 
 
 			
+def create_table(accounts, host, user, password, tables_to_add):
+
+	# Access each account's database
+	for acc_name in accounts:
+		mydb = connect_to_account_db(host, user, password, acc_name)
+
+		for table in tables_to_add:
+			mycursor = mydb.cursor()
+
+			stats_table = "CREATE TABLE table (number_posts int, followers int, following int, mean int)"
+
+			# Create table
+			mycursor.execute(stats_table)
+
 
 
 	
@@ -57,8 +77,12 @@ def create_tables(path_db, path_acc):
 	#Account names
 	accounts = init.read_account_data(path_acc)
 
-	# Check if tables exist, else create them
-	check_tables(accounts, host, user, password)
+	# Check if tables exist and get list of missing tables
+	tables_to_add = check_tables(accounts, host, user, password)
+
+	# Create the tables
+
+
 
 
 
