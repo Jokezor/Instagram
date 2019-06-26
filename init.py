@@ -1,10 +1,11 @@
 '''
 	Used to iniate the database
 '''
+
 import mysql.connector
 import os
 
-
+# Read database information from file
 def read_database_data(path):
 	# open file
 	db_file = open(path,'r')
@@ -21,12 +22,19 @@ def read_database_data(path):
 
 	return host, user, password
 
+# Read account information from file
 def read_account_data(path):
 
 	# open file
 	acc_file = open(path,'r')
 	# Read accounts
 	accounts = acc_file.readlines()
+
+	# Remove extra stuff
+	for i in range(0, len(accounts)):
+		accounts[i] = accounts[i].split('\'')[1]
+
+
 
 	# close file
 	acc_file.close()
@@ -46,15 +54,14 @@ def exists_database(accounts, mydb):
 	# List of the accounts to add databases for
 	accounts_to_add = []
 
-	for acc in accounts:
-		acc_name = acc.split('\'')[1]
-
+	for acc_name in accounts:
+		
 		if not any(acc_name in db for db in dbs):
 			accounts_to_add.append(acc_name)
 	
 	return accounts_to_add
 
-# Connect to database and return cursor
+# Connect to "ground" database and return cursor
 def connect_db(host, user, password):
 	mydb = mysql.connector.connect(
 	  host=host,
@@ -72,13 +79,8 @@ def Create_database(mydb, accounts_to_add):
 
 		mycursor.execute("CREATE DATABASE " + acc_name)
 
-
-def setup_database():
-
-	# File with your login to database such as host, user = 'your_user' and pass = 'your_password' (Need single quotes)
-	path_db = '../database_info/database_info.txt'
-	# Contains the name of your account which will be used to create db.
-	path_acc = '../account_info/account_info.txt'
+# Setups up the database
+def setup_database(path_db, path_acc):
 
 	# Get the database data
 	host, user, password = read_database_data(path_db)
