@@ -9,7 +9,7 @@ import os
 # Own code
 import init
 
-# Connect to specific database
+# Connect to specific database with account name
 def connect_to_account_db(host, user, password, acc_name):
 
 	mydb = mysql.connector.connect(
@@ -22,54 +22,36 @@ def connect_to_account_db(host, user, password, acc_name):
 	return mydb
 
 
-def check_tables(accounts, host, user, password):
-	
-	# The tables all databases will have
-	tables_tot = ['stats', 'number_posts', 'followers', 'following', 'likes', 'comments', 'comments_text', 'descriptions', 'hrefs']
+def get_table_queries():
 
-	# Keeps track of tables to add
-	tables_to_add = {account: [] for account in accounts}
+	stats_query = "CREATE TABLE %s (theme varchar(255), number_posts int, followers int, following int, mean_likes int, mean_comments int, mean_scores int)" %('stats')
+	media_query = "CREATE TABLE %s (href varchar(255), likes int, comments int, comments_text varchar(5000), descriptions varchar(5000))" %('media')
 
-	# Access each account's database
-	for acc_name in accounts:
-		mydb = connect_to_account_db(host, user, password, acc_name)
+	table_queries = {'stats': stats_query, 'media': media_query}
 
-		mycursor = mydb.cursor()
-
-		# Get the tables
-		mycursor.execute("SHOW TABLES")
-
-		# Take the tables and save in list for comparing
-		tables_check = [table for table in mycursor]
-
-		# Remove one for each already existing
-		for table in tables_tot:
-			if not any(table_check == table for table_check in tables_check):
-				tables_to_add[acc_name].append(table)
-
-	return tables_to_add
+	return table_queries
 
 
-			
-def create_table(accounts, host, user, password, tables_to_add):
+# Creates the table if it doesn't exist
+def create_table(accounts, host, user, password, table_queries):
 
 	# Access each account's database
 	for acc_name in accounts:
 		mydb = connect_to_account_db(host, user, password, acc_name)
 
-		for table in tables_to_add:
+		for table_query in table_queries.values():
 			mycursor = mydb.cursor()
 
-			stats_table = "CREATE TABLE table (number_posts int, followers int, following int, mean int)"
-
 			# Create table
-			mycursor.execute(stats_table)
+			try:
+				mycursor.execute(table_query)
+			except:
+				print("Already existing tables.")
+			else:
+				print("Created new table for account: %s" %acc_name)
 
 
-
-	
-
-
+# Gets the path of database and account text files and creates tables if not existing.
 def create_tables(path_db, path_acc):
 	# Get the database data
 	host, user, password = init.read_database_data(path_db)
@@ -77,10 +59,11 @@ def create_tables(path_db, path_acc):
 	#Account names
 	accounts = init.read_account_data(path_acc)
 
-	# Check if tables exist and get list of missing tables
-	tables_to_add = check_tables(accounts, host, user, password)
-
+	# Gets queries
+	table_queries = get_table_queries()
+	
 	# Create the tables
+	create_table(accounts, host, user, password, table_queries)
 
 
 
