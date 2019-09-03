@@ -4,6 +4,13 @@ import scrapy
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
 
+    # Equivalent
+    #start_urls = [
+    #    'http://quotes.toscrape.com/page/1/',
+    #    'http://quotes.toscrape.com/page/2/',
+    #]
+
+    # Equivalent
     def start_requests(self):
         urls = [
             'http://quotes.toscrape.com/page/1/',

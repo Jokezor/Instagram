@@ -17,6 +17,8 @@ def setup(path_db, path_acc):
 	# Create tables for each account
 	Database_talk.create_tables(path_db, path_acc)
 
+	# Insert information about themes into the database
+	#Database_talk.insert_data(path_db, path_acc)
 
 
 # Second we need to call the setup.py which will talk to the database, setup if doesn't exist.
@@ -25,11 +27,10 @@ def setup(path_db, path_acc):
 
 if __name__ == '__main__':
 
-	# File with your login to database such as host, user = 'your_user' and pass = 'your_password' (Need single quotes)
-	path_db = '../database_info/database_info.txt'
+	paths = init.Get_path_info()
+	path_db = paths[0], path_acc = paths[1], path_pages = paths[2]
 
-	# Contains the name of your account which will be used to create db.
-	path_acc = '../account_info/account_info.txt'
-
-	# First we need to create the database which we will use to handle all the data
+	# First we need databases and tables to store the data
 	setup(path_db, path_acc)
+
+	# Now we can go along and start to scrape for the information we need
