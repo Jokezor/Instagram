@@ -35,9 +35,11 @@ class QuotesSpider(Spider):
 		# Get the total number of pages to be visited.
 		# Would be good if this can be gotten as we go along. However I don't think that is possible.
 		tot_length = 0
+		
 		for acc_name in self.accounts.keys():
 			for theme in self.accounts[acc_name]:
 				tot_length+=len(self.pages[theme])
+
 
 		#[tot_length += len(self.pages[theme]) for theme in self.accounts[acc_name] for acc_name in self.accounts.keys()]
 		#print(tot_length)
@@ -79,8 +81,6 @@ class QuotesSpider(Spider):
 		# Pages for each theme. theme: page
 		self.pages = init.read_pages_data(self.paths[2])
 
-		#!!! Now need to get the theme for each account in order to access the correct pages. Will need to use these to construct the Requests. !!!
-
 		# 
 		# Account: {}
 		self.Basic_stats = {account: {'number_posts': 0, 'Followers': 0, 'Following': 0} for account in self.accounts.keys()}
@@ -90,6 +90,9 @@ class QuotesSpider(Spider):
 
 		# Account: {href: []} (Comments as list)
 		self.Comments = {account: {} for account in self.accounts.keys()}
+
+		# Account: {href: comments[0]}
+		self.descriptions = {account: {} for account in self.accounts.keys()}
 
 		# Account: [] 
 		self.hrefs = {account: [] for account in self.accounts.keys()}
@@ -106,7 +109,7 @@ class QuotesSpider(Spider):
 		# Visited pages for each account
 		self.Visited_pages = {account: [] for account in self.accounts.keys()}
 
-		self.actions = ActionChains(self.driver)
+		self.actions = ActionChains(self.driver)	
 
 	def Counter(self):
 		self.Count += 1
@@ -130,6 +133,12 @@ class QuotesSpider(Spider):
 
 				# Checking if we have gone back one month yet or not.
 				Back_one_month = False
+				#find("meta",{"property":"og:description"})
+				# Short code is same as image url. Not ordered
+
+				# Need to look through more shortcodes and edge_media_to_comment
+
+				#print(response.xpath("//meta[@property='og:description']").extract())
 
 				# Go through the images
 				while (Back_one_month==False):
@@ -159,7 +168,7 @@ class QuotesSpider(Spider):
 						# Get the hrefs
 						Scraping_functions.Get_hrefs(self, response)
 
-						#print(self.hrefs[self.accounts[self.Count]])
+						# print(self.hrefs[self.accounts[self.Count]])
 
 						Image_links = Scraping_functions.Get_Image_links(self)
 						
@@ -220,7 +229,9 @@ class QuotesSpider(Spider):
 								# Get the comments
 								Scraping_functions.Get_Comments(self, response)
 
-								#Scraping_functions.Get_Description(Comments)
+								# Get descriptions
+								Scraping_functions.Get_Descriptions(self, response)
+
 
 								# Add the current media checked to avoid going through the same media once more.
 								self.checked_Image_links[response.meta['account']].append(self.driver.current_url)
@@ -274,7 +285,7 @@ class QuotesSpider(Spider):
 			print('\n')
 
 			print("Comments:")
-			print(self.Comments)
+			print(self.descriptions)
 			print('\n')
 
 			print("checked_Image_links:")

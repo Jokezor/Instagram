@@ -160,11 +160,19 @@ def Exit_Media(selenium_object):
 
 
 # Get's the description from the comments
-def Get_Description(Comments):
+def Get_Descriptions(selenium_object, response):
 
-	for comment in Comments:
-		print(len(Comments))
-		print (comment.text)
+	# First comment of href is the description
+	selenium_object.descriptions[response.meta['account']][selenium_object.driver.current_url] = selenium_object.Comments[response.meta['account']][selenium_object.driver.current_url][0]
+
+	return selenium_object
+
+# Get amount of comments on photo/video
+def Get_num_comments(selenium_object, response):
+
+	# Will need to update
+	Comment_length_class = ''
+	Comment_length = selenium_object.driver.find_elements_by_class_name(Comment_length_class).text
 
 # Get the href
 def Get_hrefs(selenium_object, response):
